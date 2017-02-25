@@ -1,14 +1,11 @@
-%global commit0 b3c0aa3a9e7dfd8f70643bbfaf64c8af1f58a7fa
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-
 Name:           sway
-Version:        0.11
-Release:        7.git%{shortcommit0}%{?dist}
+Version:        0.12
+Release:        0.rc1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
 URL:            https://github.com/SirCmpwn/sway
-Source0:        %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
+Source0:        %{url}/archive/0.12-rc1/%{name}-%{version}-rc1.tar.gz
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(wlc)
 BuildRequires:  wayland-devel
@@ -40,10 +37,12 @@ Sway is a tiling window manager supporting Wayland compositor protocol and
 i3-compatible configuration.
 
 %prep
-%autosetup -n %{name}-%{commit0}
+%autosetup -n %{name}-0.12-rc1
 mkdir %{_target_platform}
 
 %build
+export CFLAGS="%{optflags} -Wno-error"
+export LDFLAGS="%{__global_ldflags}"
 pushd %{_target_platform}
 %cmake \
        -DBUILD_SHARED_LIBS:BOOL=OFF \
