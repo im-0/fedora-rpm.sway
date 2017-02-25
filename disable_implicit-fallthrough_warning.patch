@@ -1,13 +1,12 @@
 diff -ur sway-0.12-rc1.orig/CMakeLists.txt sway-0.12-rc1/CMakeLists.txt
 --- sway-0.12-rc1.orig/CMakeLists.txt	2017-02-25 18:12:20.863466778 +0000
-+++ sway-0.12-rc1/CMakeLists.txt	2017-02-25 18:52:51.027127750 +0000
-@@ -14,6 +14,12 @@
++++ sway-0.12-rc1/CMakeLists.txt	2017-02-25 23:08:13.393160932 +0000
+@@ -14,6 +14,11 @@
  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra")
  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-parameter")
  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Werror")
 +if (CMAKE_COMPILER_IS_GNUCC)
-+    message(FATAL_ERROR "GCC version ${CMAKE_C_COMPILER_VERSION}")
-+    if(NOT CMAKE_C_COMPILER_VERSION VERSION_GREATER_LESS 7.0)
++    if(NOT CMAKE_C_COMPILER_VERSION VERSION_LESS 7.0)
 +        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wimplicit-fallthrough=0")
 +    endif()
 +endif()
