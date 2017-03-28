@@ -72,7 +72,7 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_mandir}/man1/sway*.1*
 %{_mandir}/man5/sway*.5*
 %{_mandir}/man7/sway*.7*
-%caps(cap_sys_ptrace=eip) %{_bindir}/sway
+%caps(cap_sys_ptrace,cap_sys_tty_config=eip) %{_bindir}/sway
 %{_bindir}/swaybar
 %{_bindir}/swaybg
 %{_bindir}/swaygrab
