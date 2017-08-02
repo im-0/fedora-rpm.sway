@@ -1,13 +1,15 @@
 Name:           sway
-Version:        0.13.0
-Release:        2%{?dist}
+Version:        0.14.0
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
 URL:            https://github.com/SirCmpwn/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  make
 BuildRequires:  cmake
+BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(wlc)
 BuildRequires:  wayland-devel
 BuildRequires:  pkgconfig(wayland-client)
@@ -24,6 +26,7 @@ BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pam-devel
 # Dmenu is the default launcher in sway
 Requires:       dmenu
+Requires:       libinput >= 1.6.0
 # By default the Fedora background is used
 Recommends:     f%{fedora}-backgrounds-base
 # dmenu (as well as rxvt any many others) requires XWayland on Sway
@@ -42,7 +45,8 @@ i3-compatible configuration.
 mkdir %{_target_platform}
 
 %build
-export CFLAGS="%{optflags} -Wno-error"
+#export CFLAGS="%{optflags} -Wno-error"
+export CFLAGS="%{optflags}"
 export LDFLAGS="%{__global_ldflags}"
 pushd %{_target_platform}
 %cmake \
@@ -82,6 +86,12 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Wed Aug 02 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 0.14.0-1
+- Update to 0.14.0
+- add libinput as dependency
+- add dbus as build dependency for tray icon support
+- remove -Wno-error flag
+
 * Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.13.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
