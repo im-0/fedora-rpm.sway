@@ -1,11 +1,12 @@
 Name:           sway
-Version:        0.14.0
-Release:        3%{?dist}
+Version:        0.15.rc1
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
-URL:            https://github.com/SirCmpwn/sway
-Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+URL:            https://github.com/swaywm/sway
+#Source0:        %%{url}/archive/%%{version}/%%{name}-%%{version}.tar.gz
+Source0:        %{url}/archive/%{version}/%{name}-0.15-rc1.tar.gz
 
 BuildRequires:  make
 BuildRequires:  cmake
@@ -36,16 +37,12 @@ Recommends:     rxvt-unicode-256color-ml
 # ImageMagick is needed to take screenshots with swaygrab
 Recommends:     ImageMagick
 
-# sway freezes when users scrolls fast through workspaces
-# https://github.com/swaywm/sway/issues/892
-Patch1: 0001-Implement-nonblocking-IO-in-IPC-server.patch
-
 %description
 Sway is a tiling window manager supporting Wayland compositor protocol and 
 i3-compatible configuration.
 
 %prep
-%autosetup -p1
+%autosetup
 mkdir %{_target_platform}
 
 %build
@@ -90,6 +87,11 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Mon Oct 09 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 0.15.rc1-1
+- Update to 0.15.0-rc1
+- remove patch
+- fix sources link
+
 * Thu Oct 05 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 0.14.0-3
 - Fix freezing
 
