@@ -1,6 +1,6 @@
 Name:           sway
 Version:        0.15.0
-Release:        0.3.rc1%{?dist}
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
@@ -87,6 +87,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Fri Nov 10 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 0.15.0-1
+- update to stable 0.15.0
+
 * Tue Oct 10 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 0.15.0-0.3.rc1
 - Rebuild for fix for #1388
 - fix versioning according to guidelines
