@@ -1,6 +1,6 @@
 Name:           sway
 Version:        0.15.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
@@ -44,6 +44,10 @@ i3-compatible configuration.
 %prep
 %autosetup
 mkdir %{_target_platform}
+%if 0%{?fedora} >= 28
+sed -i -e 's!JsonC 0.12.1 REQUIRED!JsonC 0.13 REQUIRED!g' \
+  -e 's!-Werror!!g' CMakeLists.txt
+%endif
 
 %build
 #export CFLAGS="%{optflags} -Wno-error"
@@ -87,6 +91,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Sun Dec 10 2017 Björn Esser <besser82@fedoraproject.org> - 0.15.0-3
+- Rebuilt for libjson-c.so.3
+
 * Sat Nov 11 2017 Zuzana Svetlikova <zsvetlik@redhat.com> - 0.15.0-2
 - Bump for wlc rebuild
 
