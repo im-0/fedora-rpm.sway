@@ -1,12 +1,15 @@
 Name:           sway
 Version:        0.15.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
 URL:            https://github.com/swaywm/sway
 #best practice is use the tip of branch
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+
+# Upstreamed
+Patch0:         %{url}/pull/1517.patch#/%{name}-0.15.0_json-c.patch
 
 BuildRequires:  make
 BuildRequires:  cmake
@@ -42,12 +45,8 @@ Sway is a tiling window manager supporting Wayland compositor protocol and
 i3-compatible configuration.
 
 %prep
-%autosetup
+%autosetup -p 1
 mkdir %{_target_platform}
-%if 0%{?fedora} >= 28
-sed -i -e 's!JsonC 0.12.1 REQUIRED!JsonC 0.13 REQUIRED!g' \
-  -e 's!-Werror!!g' CMakeLists.txt
-%endif
 
 %build
 #export CFLAGS="%{optflags} -Wno-error"
@@ -91,6 +90,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Thu Dec 14 2017 Björn Esser <besser82@fedoraproject.org> - 0.15.0-4
+- Add upstream patch fixing issues with json-c
+
 * Sun Dec 10 2017 Björn Esser <besser82@fedoraproject.org> - 0.15.0-3
 - Rebuilt for libjson-c.so.3
 
