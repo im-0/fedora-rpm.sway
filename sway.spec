@@ -1,15 +1,11 @@
 Name:           sway
-Version:        0.15.0
-Release:        4%{?dist}
+Version:        0.15.1
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
 URL:            https://github.com/swaywm/sway
-#best practice is use the tip of branch
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-# Upstreamed
-Patch0:         %{url}/pull/1517.patch#/%{name}-0.15.0_json-c.patch
 
 BuildRequires:  make
 BuildRequires:  cmake
@@ -90,6 +86,10 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Sat Dec 30 2017 Till Hofmann <thofmann@fedoraproject.org> - 0.15.1-1
+- Update to 0.15.1
+- Remove upstreamed patch (upstream PR #1517)
+
 * Thu Dec 14 2017 Björn Esser <besser82@fedoraproject.org> - 0.15.0-4
 - Add upstream patch fixing issues with json-c
 
