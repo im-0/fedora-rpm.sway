@@ -7,23 +7,24 @@ License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
-BuildRequires:  make
+BuildRequires:  asciidoc
 BuildRequires:  cmake
+BuildRequires:  gcc-c++
+BuildRequires:  make
+BuildRequires:  pam-devel
+BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(dbus-1)
-BuildRequires:  pkgconfig(wlc)
-BuildRequires:  wayland-devel
+BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
+BuildRequires:  pkgconfig(json-c)
+BuildRequires:  pkgconfig(libcap)
+BuildRequires:  pkgconfig(libpcre)
+BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-server)
-BuildRequires:  asciidoc
-BuildRequires:  pkgconfig(libpcre)
-BuildRequires:  pkgconfig(libcap)
-BuildRequires:  pkgconfig(json-c)
-BuildRequires:  pkgconfig(pango)
-BuildRequires:  pkgconfig(cairo)
-BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
-BuildRequires:  pam-devel
+BuildRequires:  pkgconfig(wlc)
+BuildRequires:  wayland-devel
 # Dmenu is the default launcher in sway
 Requires:       dmenu
 Requires:       libinput >= 1.6.0
