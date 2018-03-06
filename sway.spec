@@ -1,6 +1,6 @@
 Name:           sway
 Version:        0.15.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        i3-compatible window manager for Wayland
 Group:          User Interface/X
 License:        MIT
@@ -87,6 +87,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Tue Mar 06 2018 Björn Esser <besser82@fedoraproject.org> - 0.15.1-3
+- Rebuilt for libjson-c.so.4 (json-c v0.13.1)
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.15.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
