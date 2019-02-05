@@ -37,7 +37,7 @@ Recommends:     rxvt-unicode-256color-ml
 Recommends:     ImageMagick
 
 %description
-Sway is a tiling window manager supporting Wayland compositor protocol and 
+Sway is a tiling window manager supporting Wayland compositor protocol and
 i3-compatible configuration.
 
 %prep
