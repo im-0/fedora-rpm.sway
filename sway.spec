@@ -1,10 +1,12 @@
 Name:           sway
 Version:        0.15.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+
+Patch0:         sway-0.15.2-disable-Werror.patch
 
 BuildRequires:  asciidoc
 BuildRequires:  cmake
@@ -86,6 +88,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/zsh/site-functions/_sway*
 
 %changelog
+* Thu Feb 07 2019 Björn Esser <besser82@fedoraproject.org> - 0.15.2-3
+- Add patch to disable -Werror, fixes FTBFS
+
 * Sun Feb 03 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.15.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
 
