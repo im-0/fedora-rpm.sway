@@ -1,17 +1,18 @@
 Name:           sway
-Version:        0.15.2
-Release:        3%{?dist}
+Version:        1.0
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
 
-Patch0:         sway-0.15.2-disable-Werror.patch
+# https://github.com/swaywm/sway/commit/bcde298a719f60b9913133dbd2a169dedbc8dd7d
+Patch0:         0001-Fix-size_t-temporary-underflow-in-log_loaded_themes.patch
 
-BuildRequires:  asciidoc
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  make
+BuildRequires:  meson
 BuildRequires:  pam-devel
 BuildRequires:  pkgconfig(cairo)
 BuildRequires:  pkgconfig(dbus-1)
@@ -24,8 +25,12 @@ BuildRequires:  pkgconfig(wayland-client)
 BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-server)
-BuildRequires:  pkgconfig(wlc)
+BuildRequires:  pkgconfig(wayland-protocols)
 BuildRequires:  wayland-devel
+BuildRequires:  libevdev-devel
+BuildRequires:  wlroots-devel >= 0.5.0
+BuildRequires:  git
+BuildRequires:  scdoc
 # Dmenu is the default launcher in sway
 Requires:       dmenu
 Requires:       libinput >= 1.6.0
@@ -35,8 +40,9 @@ Recommends:     f%{fedora}-backgrounds-base
 Requires:       xorg-x11-server-Xwayland
 # Sway binds the terminal shortcut to one specific terminal. In our case urxvtc-ml
 Recommends:     rxvt-unicode-256color-ml
-# ImageMagick is needed to take screenshots with swaygrab
-Recommends:     ImageMagick
+# TODO: needs packaging
+# grim is the recommended way to take screenshots on sway 1.0+
+# Recommends:     grim
 
 %description
 Sway is a tiling window manager supporting Wayland compositor protocol and
@@ -47,20 +53,12 @@ i3-compatible configuration.
 mkdir %{_target_platform}
 
 %build
-#export CFLAGS="%{optflags} -Wno-error"
-export CFLAGS="%{optflags}"
-export LDFLAGS="%{__global_ldflags}"
-pushd %{_target_platform}
-%cmake \
-       -DBUILD_SHARED_LIBS:BOOL=OFF \
-       -Dzsh-completions=YES \
-       -Ddefault-wallpaper=NO \
-       -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
-       ..
-popd
-%make_build -C %{_target_platform}
+# TODO: need scdoc updated to >= 1.9.1
+%meson -Dman-pages=disabled
+%meson_build
 
 %install
+%meson_install
 %make_install -C %{_target_platform}
 # Set default terminal to urxvt256c-ml
 sed -i 's/^set $term urxvt$/set \$term urxvt256c-ml/' %{buildroot}%{_sysconfdir}/sway/config
@@ -74,20 +72,25 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %config(noreplace) %{_sysconfdir}/sway/config
 %dir %{_sysconfdir}/sway/security.d
 %config(noreplace) %{_sysconfdir}/sway/security.d/00-defaults
-%config %{_sysconfdir}/pam.d/swaylock
-%{_mandir}/man1/sway*.1*
-%{_mandir}/man5/sway*.5*
-%{_mandir}/man7/sway*.7*
+# TODO: pending scdoc update
+#%%{_mandir}/man1/sway*.1*
+#%%{_mandir}/man5/sway*.5*
+#%%{_mandir}/man7/sway*.7*
 %caps(cap_sys_ptrace,cap_sys_tty_config=eip) %{_bindir}/sway
 %{_bindir}/swaybar
 %{_bindir}/swaybg
-%{_bindir}/swaygrab
-%{_bindir}/swaylock
 %{_bindir}/swaymsg
+%{_bindir}/swaynag
 %{_datadir}/wayland-sessions/sway.desktop
 %{_datadir}/zsh/site-functions/_sway*
+%{_datadir}/bash-completion/completions/sway*
+%{_datadir}/fish/completions/sway*
+%{_datadir}/backgrounds/sway/Sway*.png
 
 %changelog
+* Mon Mar 18 2019 Jeff Peeler <jpeeler@redhat.com> - 1.0-1
+- Update to 1.0 (without man pages)
+
 * Thu Feb 07 2019 Björn Esser <besser82@fedoraproject.org> - 0.15.2-3
 - Add patch to disable -Werror, fixes FTBFS
 

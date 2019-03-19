@@ -1,0 +1,40 @@
+From 90e5c6084f7241922a11ae1ded47e01bfe3c7bb4 Mon Sep 17 00:00:00 2001
+From: emersion <contact@emersion.fr>
+Date: Mon, 11 Mar 2019 17:00:06 +0100
+Subject: [PATCH] Fix size_t temporary underflow in log_loaded_themes
+
+`len` will underflow but will overflow right after, so it's not as bad as it
+may appear. Still better not to under/overflow at all.
+
+Fixes https://github.com/swaywm/sway/issues/3862
+---
+ swaybar/tray/icon.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/swaybar/tray/icon.c b/swaybar/tray/icon.c
+index c7ce20b4..2276e36d 100644
+--- a/swaybar/tray/icon.c
++++ b/swaybar/tray/icon.c
+@@ -307,16 +307,16 @@ static void log_loaded_themes(list_t *themes) {
+ 		return;
+ 	}
+ 
+-	const char *sep = ", ";
++	const char sep[] = ", ";
+ 	size_t sep_len = strlen(sep);
+ 
+-	size_t len = 1 - sep_len;
++	size_t len = 0;
+ 	for (int i = 0; i < themes->length; ++i) {
+ 		struct icon_theme *theme = themes->items[i];
+ 		len += strlen(theme->name) + sep_len;
+ 	}
+ 
+-	char *str = malloc(len);
++	char *str = malloc(len + 1);
+ 	if (!str) {
+ 		return;
+ 	}
+-- 
+2.20.1
+
