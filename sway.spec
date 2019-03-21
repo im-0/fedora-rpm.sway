@@ -59,7 +59,6 @@ mkdir %{_target_platform}
 
 %install
 %meson_install
-%make_install -C %{_target_platform}
 # Set default terminal to urxvt256c-ml
 sed -i 's/^set $term urxvt$/set \$term urxvt256c-ml/' %{buildroot}%{_sysconfdir}/sway/config
 # Set Fedora background as default background
