@@ -1,6 +1,6 @@
 Name:           sway
 Version:        1.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
@@ -81,12 +81,22 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_bindir}/swaymsg
 %{_bindir}/swaynag
 %{_datadir}/wayland-sessions/sway.desktop
+%dir %{_datadir}/zsh
+%dir %{_datadir}/zsh/site-functions
 %{_datadir}/zsh/site-functions/_sway*
+%dir %{_datadir}/bash-completion
+%dir %{_datadir}/bash-completion/completions
 %{_datadir}/bash-completion/completions/sway*
+%dir %{_datadir}/fish
+%dir %{_datadir}/fish/completions
 %{_datadir}/fish/completions/sway*
-%{_datadir}/backgrounds/sway/Sway*.png
+%{_datadir}/backgrounds/sway
 
 %changelog
+* Thu Mar 21 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.0-2
+- Remove obsolete (and failing) call to %%make_install
+- Fix directories without owner
+
 * Mon Mar 18 2019 Jeff Peeler <jpeeler@redhat.com> - 1.0-1
 - Update to 1.0 (without man pages)
 
