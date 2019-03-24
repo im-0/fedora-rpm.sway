@@ -1,6 +1,6 @@
 Name:           sway
 Version:        1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
@@ -19,6 +19,7 @@ BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(gdk-pixbuf-2.0)
 BuildRequires:  pkgconfig(json-c)
 BuildRequires:  pkgconfig(libcap)
+BuildRequires:  pkgconfig(libinput)
 BuildRequires:  pkgconfig(libpcre)
 BuildRequires:  pkgconfig(pango)
 BuildRequires:  pkgconfig(wayland-client)
@@ -26,14 +27,13 @@ BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-server)
 BuildRequires:  pkgconfig(wayland-protocols)
+BuildRequires:  pkgconfig(wlroots) >= 0.5.0
 BuildRequires:  wayland-devel
 BuildRequires:  libevdev-devel
-BuildRequires:  wlroots-devel >= 0.5.0
 BuildRequires:  git
 BuildRequires:  scdoc
 # Dmenu is the default launcher in sway
-Requires:       dmenu
-Requires:       libinput >= 1.6.0
+Recommends:     dmenu
 # By default the Fedora background is used
 Recommends:     f%{fedora}-backgrounds-base
 # dmenu (as well as rxvt any many others) requires XWayland on Sway
@@ -50,11 +50,9 @@ i3-compatible configuration.
 
 %prep
 %autosetup -p 1
-mkdir %{_target_platform}
 
 %build
-# TODO: need scdoc updated to >= 1.9.1
-%meson -Dman-pages=disabled
+%meson
 %meson_build
 
 %install
@@ -71,11 +69,10 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %config(noreplace) %{_sysconfdir}/sway/config
 %dir %{_sysconfdir}/sway/security.d
 %config(noreplace) %{_sysconfdir}/sway/security.d/00-defaults
-# TODO: pending scdoc update
-#%%{_mandir}/man1/sway*.1*
-#%%{_mandir}/man5/sway*.5*
-#%%{_mandir}/man7/sway*.7*
-%caps(cap_sys_ptrace,cap_sys_tty_config=eip) %{_bindir}/sway
+%{_mandir}/man1/*
+%{_mandir}/man5/*
+%{_mandir}/man7/*
+%{_bindir}/sway
 %{_bindir}/swaybar
 %{_bindir}/swaybg
 %{_bindir}/swaymsg
@@ -93,6 +90,13 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/backgrounds/sway
 
 %changelog
+* Sun Mar 24 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.0-3
+- Replace 'Requires: dmenu' by 'Recommends: dmenu'
+- Re-enable manpages
+- Remove cap_sys_ptrace, cap_sys_tty_config from sway binary
+- Replace 'Requires: libinput' by 'BuildRequires: pkgconfig(libinput)'
+- Replace 'BuildRequires: wlroots-devel' by 'BuildRequires: pkgconfig(wlroots)'
+
 * Thu Mar 21 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.0-2
 - Remove obsolete (and failing) call to %%make_install
 - Fix directories without owner
