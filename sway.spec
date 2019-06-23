@@ -1,13 +1,10 @@
 Name:           sway
-Version:        1.0
-Release:        3%{?dist}
+Version:        1.1.1
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
-
-# https://github.com/swaywm/sway/commit/bcde298a719f60b9913133dbd2a169dedbc8dd7d
-Patch0:         0001-Fix-size_t-temporary-underflow-in-log_loaded_themes.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -27,15 +24,18 @@ BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-server)
 BuildRequires:  pkgconfig(wayland-protocols)
-BuildRequires:  pkgconfig(wlroots) >= 0.5.0
+BuildRequires:  pkgconfig(wlroots) >= 0.6.0
 BuildRequires:  wayland-devel
 BuildRequires:  libevdev-devel
 BuildRequires:  git
 BuildRequires:  scdoc
 # Dmenu is the default launcher in sway
 Recommends:     dmenu
+
+Requires:       swaybg
 # By default the Fedora background is used
 Recommends:     f%{fedora}-backgrounds-base
+
 # dmenu (as well as rxvt any many others) requires XWayland on Sway
 Requires:       xorg-x11-server-Xwayland
 # Sway binds the terminal shortcut to one specific terminal. In our case urxvtc-ml
@@ -74,7 +74,6 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_mandir}/man7/*
 %{_bindir}/sway
 %{_bindir}/swaybar
-%{_bindir}/swaybg
 %{_bindir}/swaymsg
 %{_bindir}/swaynag
 %{_datadir}/wayland-sessions/sway.desktop
@@ -90,6 +89,11 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/backgrounds/sway
 
 %changelog
+* Sun Jun 23 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.1.1-1
+- Update to 1.1.1
+- Add 'Requires: swaybg' (swaybg has been split from sway)
+- Remove upstreamed patch
+
 * Sun Mar 24 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.0-3
 - Replace 'Requires: dmenu' by 'Recommends: dmenu'
 - Re-enable manpages
