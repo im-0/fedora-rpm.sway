@@ -1,6 +1,6 @@
 Name:           sway
 Version:        1.1.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
@@ -89,6 +89,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/backgrounds/sway
 
 %changelog
+* Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Sun Jun 23 2019 Till Hofmann <thofmann@fedoraproject.org> - 1.1.1-1
 - Update to 1.1.1
 - Add 'Requires: swaybg' (swaybg has been split from sway)
