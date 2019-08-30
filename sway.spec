@@ -1,6 +1,6 @@
 Name:           sway
-Version:        1.1.1
-Release:        2%{?dist}
+Version:        1.2
+Release:        1%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
@@ -24,7 +24,7 @@ BuildRequires:  pkgconfig(wayland-cursor)
 BuildRequires:  pkgconfig(wayland-egl)
 BuildRequires:  pkgconfig(wayland-server)
 BuildRequires:  pkgconfig(wayland-protocols)
-BuildRequires:  pkgconfig(wlroots) >= 0.6.0
+BuildRequires:  pkgconfig(wlroots) >= 0.7.0
 BuildRequires:  wayland-devel
 BuildRequires:  libevdev-devel
 BuildRequires:  git
@@ -89,6 +89,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/backgrounds/sway
 
 %changelog
+* Thu Aug 29 2019 Jeff Peeler <jpeeler@redhat.com> - 1.2-1
+- Update to 1.2
+
 * Sat Jul 27 2019 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
