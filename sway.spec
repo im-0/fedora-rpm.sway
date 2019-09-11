@@ -1,10 +1,12 @@
 Name:           sway
 Version:        1.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        i3-compatible window manager for Wayland
 License:        MIT
 URL:            https://github.com/swaywm/sway
 Source0:        %{url}/archive/%{version}/%{name}-%{version}.tar.gz
+
+Patch0001: 0001-layer-shell-don-t-give-focus-to-unmapped-layer-surfa.patch
 
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
@@ -89,6 +91,9 @@ sed -i "s|^output \* bg .*|output * bg /usr/share/backgrounds/f%{fedora}/default
 %{_datadir}/backgrounds/sway
 
 %changelog
+* Wed Sep 11 2019 Ivan Mironov <mironov.ivan@gmail.com> - 1.2-2
+- Add patch to fix easily reproducible crash
+
 * Thu Aug 29 2019 Jeff Peeler <jpeeler@redhat.com> - 1.2-1
 - Update to 1.2
 

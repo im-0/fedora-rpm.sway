@@ -1,0 +1,41 @@
+From 85f5caf19e268a52301ae4cfea43d71944666133 Mon Sep 17 00:00:00 2001
+From: Simon Ser <contact@emersion.fr>
+Date: Sat, 31 Aug 2019 23:19:47 +0300
+Subject: [PATCH] layer-shell: don't give focus to unmapped layer surfaces
+
+Focused layers are not cleared when destroyed, they are cleared on unmap.
+Giving focus to an unmapped layer surface is (1) incorrect and (2) triggers a
+use-after-free.
+
+Closes: https://github.com/swaywm/sway/issues/4517
+---
+ sway/desktop/layer_shell.c | 3 ++-
+ sway/input/seat.c          | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/sway/desktop/layer_shell.c b/sway/desktop/layer_shell.c
+index a6239bea3..c31980882 100644
+--- a/sway/desktop/layer_shell.c
++++ b/sway/desktop/layer_shell.c
+@@ -200,7 +200,8 @@ void arrange_layers(struct sway_output *output) {
+ 	for (size_t i = 0; i < nlayers; ++i) {
+ 		wl_list_for_each_reverse(layer,
+ 				&output->layers[layers_above_shell[i]], link) {
+-			if (layer->layer_surface->current.keyboard_interactive) {
++			if (layer->layer_surface->current.keyboard_interactive &&
++					layer->layer_surface->mapped) {
+ 				topmost = layer;
+ 				break;
+ 			}
+diff --git a/sway/input/seat.c b/sway/input/seat.c
+index 4da8e9377..b2243fe33 100644
+--- a/sway/input/seat.c
++++ b/sway/input/seat.c
+@@ -1095,6 +1095,7 @@ void seat_set_focus_layer(struct sway_seat *seat,
+ 	} else if (!layer || seat->focused_layer == layer) {
+ 		return;
+ 	}
++	assert(layer->mapped);
+ 	seat_set_focus_surface(seat, layer->surface, true);
+ 	if (layer->layer >= ZWLR_LAYER_SHELL_V1_LAYER_TOP) {
+ 		seat->focused_layer = layer;
